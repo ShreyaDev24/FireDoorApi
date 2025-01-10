@@ -1,0 +1,19 @@
+on: 
+  push:
+      branches:
+        - dev
+name: 🚀 Deploy website to dev
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.2.0
+      with:
+        server: ftp://185.224.138.208
+        username: u712595689.coreapis_dev
+        password: 5E!jYuFYQTwQvbH
