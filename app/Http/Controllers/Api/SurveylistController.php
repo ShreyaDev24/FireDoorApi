@@ -35,7 +35,7 @@ class SurveylistController extends Controller
     // use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     public function surveyList(Request $request)
     {
-        dd('hjb');
+        dd('xcn');
         if ($request->status == "completed") {
             $status = 2;
         }
