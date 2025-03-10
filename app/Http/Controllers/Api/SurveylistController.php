@@ -35,7 +35,6 @@ class SurveylistController extends Controller
     // use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     public function surveyList(Request $request)
     {
-        dd('xcn');
         if ($request->status == "completed") {
             $status = 2;
         }
@@ -43,7 +42,7 @@ class SurveylistController extends Controller
             $status = 1;
         }
         $userId = JWTAuth::user()->id;
-        dd($userId);
+
         // if (!empty($request->projectId) && $request->projectId == null) {
         $surveyInfo = SurveyInfo::join('project', 'project.id', 'survey_info.projectId')
             ->join('users', 'users.id', 'survey_info.userId')
@@ -185,7 +184,7 @@ class SurveylistController extends Controller
                 $list['jobDescription'] = '';
 
                 foreach ($surveyAttachment as $attach) {
-                    $list['attachments'][] = 'https://dev.jfds.co.uk/public/Survey_attachment/'.$attach->attachment;
+                    $list['attachments'][] = 'https://portal.jfds.co.uk/public/Survey_attachment/'.$attach->attachment;
                 }
 
                 $list['notes'] = $surveyInfo->notes;
@@ -495,7 +494,7 @@ class SurveylistController extends Controller
         // ->select('item_master.*','items.*')->where('survey_info.userId',$user)->where('survey_info.id',$request->survey_id)->orderBy('item_master.floor','ASC')->get();
         $parameter= Crypt::encrypt($request->survey_id);
         // $url = 'http://127.0.0.1:8000/project/floorPlanList/'.$parameter;
-        $url = 'https://dev.jfds.co.uk/project/floorPlanList/'.$parameter;
+        $url = 'https://portal.jfds.co.uk/project/floorPlanList/'.$parameter;
         $SurveyInfo = SurveyInfo::join('survey_status','survey_status.projectId','survey_info.projectId')
         ->join('item_master','item_master.id','survey_status.itemMasterId')
         ->join('items','items.itemId','item_master.itemID')
@@ -517,8 +516,9 @@ class SurveylistController extends Controller
                     $data[$i]['id'] = $floor->id;
                     $data[$i]['floorName'] = $floor->floor_name;
                     foreach($SurveyInfo as $info){
-                    // dd($info);
-                        if($floor->floor_name == $info->floor){
+                    // dd($floor->floor_name, $info->floor);
+                        if($floor->floor_name === $info->floor){
+
                             if($info->status == 1){
                                 $status = 'Pending';
                             }else if($info->status == 2){
@@ -1038,7 +1038,7 @@ class SurveylistController extends Controller
             $surveyId = Users::where('users.id',$userId)->first();
             $user = Users::join('companies', 'users.id', 'companies.UserId')->where('users.UserType', 2)->where('users.id', $surveyId->CreatedBy)->select('users.UserEmail', 'users.FirstName', 'users.LastName', 'users.UserImage', 'users.UserPhone', 'users.UserJobtitle','companies.*', 'users.id')->first();
             if (!empty($user)) {
-                $user['UserImage'] = 'https://dev.jfds.co.uk/CompanyLogo/'. $user->UserImage;
+                $user['UserImage'] = 'https://portal.jfds.co.uk/CompanyLogo/'. $user->UserImage;
                 $response['type'] = 'success';
                 $response['message'] = 'sucessful response';
                 $response['data'] = $user;

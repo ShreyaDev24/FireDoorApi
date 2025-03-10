@@ -65,7 +65,7 @@ class PasswordResetRequestController extends Controller
         }
 
         $subject = 'Login OTP';
-        $emailFrom = 'no-reply@jfds.co.uk';
+        $emailFrom = 'noreply@jfds.co.uk';
         $data_set = ['usermname'=>$usermname,'otp'=>$otp];
         try{
             Mail::send(['html' => 'Mail.Password'], $data_set, function($message) use(&$emailTo, &$subject, &$emailFrom) {
